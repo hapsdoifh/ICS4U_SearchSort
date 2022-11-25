@@ -16,7 +16,9 @@ public class Students {
         return StudentNumber;
     }
 
-    
+    public void setName(String name){
+        Name = name;
+    }
     public void setSN(int sn){
         StudentNumber = sn;
     }
