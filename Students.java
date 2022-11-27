@@ -5,9 +5,9 @@ public class Students {
         Name = "";
         StudentNumber = -1;
     }
-    public Students(String name){
+    public Students(String name, int stdn){
         Name = name;
-        StudentNumber = 0;
+        StudentNumber = stdn;
     }
     public String getName(){
         return Name;

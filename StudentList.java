@@ -2,13 +2,19 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class StudentList {
-    ArrayList <Students> mylist = new ArrayList<Students>();;
-    Students[] sortedStudent;
+    ArrayList <Students> mylist = new ArrayList<Students>();
 
-    public StudentList(String[] st){
+    public StudentList(String[] st, int sn){
         for(String i : st){
-            mylist.add(new Students(i));
+            mylist.add(new Students(i,sn));
         }
+    }
+
+    public StudentList(){
+    }
+
+    public ArrayList <Students> getList(){
+        return mylist;
     }
     public Students findStudent(String target){
         for(int i = 0; i<mylist.size(); i++){
@@ -24,71 +30,71 @@ public class StudentList {
         Scanner sc = new Scanner(System.in);
         Students tempStudent = findStudent(name);
         if(tempStudent!=null){
-            System.out.println("The name you searched already existes" + "\nThis is their student number: " + tempStudent.getSN());
+            System.out.println("The name you searched already existes" + "\nThis is their student number: \t" + tempStudent.getSN());
         }else{
-            System.out.print("The name you searched does not exist, would you like to add it (yes/no): ");
+            System.out.print("The name you searched does not exist, would you like to add it (yes/no): \t");
             if(sc.nextLine().equals("yes")){
-                mylist.add(new Students(name));
-            }
-            System.out.print("Would you like to add their student number (yes/no): ");
-            if(sc.nextLine().equals("yes")){
-                System.out.print("Student Number: ");
-                mylist.get(mylist.size()-1).setSN(sc.nextInt());
+                System.out.print("Add their student number, enter -1 if N/A : \t");
+                mylist.add(new Students(name,sc.nextInt()));
             }
         }
     }
 
-    public void outputStudentList(){
-        for(Students S : mylist){
-            System.out.println(S.getName());    
-
-
+    public void outputStudentList(ArrayList<Students> l){
+        for(Students S : l){
+            System.out.println(S.getName() +":" + S.getSN());    
         }
     }
 
-    public Students[] Merge(Students[] A, Students[] B){
-        Students[] rList = new Students[A.length+B.length];
-        int ac = 0, bc = 0, rcnt = 0;
-        while(ac < A.length && bc < B.length){
-            if(A[ac].getName().charAt(0) < B[bc].getName().charAt(0)){
-                rList[rcnt] = new Students(A[ac].getName());
-                ac++;
-            }else{
-                rList[rcnt] = new Students(B[bc].getName());
-                bc++;
+    public ArrayList <Students> Merge(ArrayList <Students> A, ArrayList <Students> B,boolean order){
+        ArrayList <Students> rList = new ArrayList <Students>();
+        int ac = 0, bc = 0, rcnt = 0, charPos = 0;
+        while(ac < A.size() && bc < B.size()){
+            while(charPos < A.get(ac).getName().length() && charPos < B.get(bc).getName().length()){ //loop through the word if necessary
+                if(A.get(ac).getName().charAt(charPos) == B.get(bc).getName().charAt(charPos)){
+                    charPos++;
+                }else if((A.get(ac).getName().charAt(charPos) < B.get(bc).getName().charAt(charPos))==order){
+                    rList.add(new Students(A.get(ac).getName(),A.get(ac).getSN()));
+                    ac++;
+                    break;
+                }
+                else{
+                    rList.add(new Students(B.get(bc).getName(),B.get(bc).getSN()));
+                    bc++;
+                    break;
+                }
             }
             rcnt++;
         }
         //if A not empty
-        while(ac < A.length){
-            rList[rcnt] = new Students(A[ac].getName());
+        while(ac < A.size()){
+            rList.add(new Students(A.get(ac).getName(),A.get(ac).getSN()));
             ac++;
             rcnt++;
         }
-        while(bc < B.length){
-            rList[rcnt] = new Students(B[bc].getName());
+        while(bc < B.size()){
+            rList.add(new Students(B.get(bc).getName(),B.get(bc).getSN()));
             bc++;
             rcnt++;
         }
         return rList;
     }
 
-    public Students[] sortByAlpha(boolean order, Students[] listToSort,int start, int end){
+    public ArrayList <Students> sortByAlpha(boolean order, int start, int end){
+        ArrayList <Students> tempListA = new ArrayList <Students>();
+        ArrayList <Students> tempListB = new ArrayList <Students>();
         if(end-start <= 1){
-            Students[] tempListA = new Students[1];
-            Students[] tempListB = new Students[1];
-            if(end-start <= 0){                
-                tempListA = new Students[1];
-                tempListA[0] = listToSort[start];
+            if(end-start <= 0){              
+                tempListA.add(mylist.get(start));
                 return tempListA;
             }
-            tempListA[0] = listToSort[start];
-            tempListB[0] = listToSort[end];
-            return Merge(tempListA,tempListB);            
+            tempListA.add(mylist.get(start));
+            tempListB.add(mylist.get(end));
+            return Merge(tempListA,tempListB, order);            
         }else{
-            Students[] tempListA = sortByAlpha(order, listToSort, start, (end+start)/2);
-            Students[] tempListB = sortByAlpha(order, listToSort, (end+start)/2+1, end);
-            return Merge(tempListA,tempListB);            
+            tempListA = sortByAlpha(order, start, (end+start)/2);
+            tempListB = sortByAlpha(order, (end+start)/2+1, end);
+            return Merge(tempListA,tempListB, order);            
         }
 
     }
