@@ -19,6 +19,8 @@ public class Temperature {
             tempList.add(new temps(tps[i],i));
         }
     }
+    public Temperature(){
+    }
     public boolean inputTemp(){
         Scanner sc = new Scanner(System.in);
         String t,d;
@@ -43,20 +45,20 @@ public class Temperature {
             SortedList.add(new temps(cp.temp, cp.day));
         }
         temps TransferStore;
-        int minInd = 0;
-        double min = SortedList.get(minInd).temp;
+        int CondInd = 0;
+        double SortCond = SortedList.get(CondInd).temp;
         for(int i=0; i<SortedList.size(); i++){     
-            min = SortedList.get(i).temp;
-            minInd = i;      
+            SortCond = SortedList.get(i).temp;
+            CondInd = i;      
             for(int k = i; k < SortedList.size(); k++){
-                if(SortedList.get(k).temp < min){
-                    min = SortedList.get(k).temp;
-                    minInd = k;
+                if(SortedList.get(k).temp < SortCond == order){
+                    SortCond = SortedList.get(k).temp;
+                    CondInd = k;
                 }
             }
             TransferStore = SortedList.get(i);
-            SortedList.set(i,SortedList.get(minInd));
-            SortedList.set(minInd,TransferStore); 
+            SortedList.set(i,SortedList.get(CondInd));
+            SortedList.set(CondInd,TransferStore); 
         }
         return SortedList;
     }
