@@ -42,7 +42,7 @@ public class StudentList {
 
     public void outputStudentList(ArrayList<Students> l){
         for(Students S : l){
-            System.out.println(S.getName() +":" + S.getSN());    
+            System.out.println("Name: "+S.getName() +"\tS Number:" + S.getSN());    
         }
     }
 
@@ -51,14 +51,15 @@ public class StudentList {
         int ac = 0, bc = 0, rcnt = 0, charPos = 0;
         while(ac < A.size() && bc < B.size()){
             while(charPos < A.get(ac).getName().length() && charPos < B.get(bc).getName().length()){ //loop through the word if necessary
-                if(A.get(ac).getName().charAt(charPos) == B.get(bc).getName().charAt(charPos)){
+                char evalA = Character.toUpperCase(A.get(ac).getName().charAt(charPos));
+                char evalB = Character.toUpperCase(B.get(bc).getName().charAt(charPos));
+                if(evalA == evalA){
                     charPos++;
-                }else if((A.get(ac).getName().charAt(charPos) < B.get(bc).getName().charAt(charPos))==order){
+                }else if((evalA < evalB)==order){
                     rList.add(new Students(A.get(ac).getName(),A.get(ac).getSN()));
                     ac++;
                     break;
-                }
-                else{
+                }else{
                     rList.add(new Students(B.get(bc).getName(),B.get(bc).getSN()));
                     bc++;
                     break;
@@ -80,7 +81,7 @@ public class StudentList {
         return rList;
     }
 
-    public ArrayList <Students> sortByAlpha(boolean order, int start, int end){
+    public ArrayList <Students> AlphaMergeSort(boolean order, int start, int end){
         ArrayList <Students> tempListA = new ArrayList <Students>();
         ArrayList <Students> tempListB = new ArrayList <Students>();
         if(end-start <= 1){
@@ -92,8 +93,8 @@ public class StudentList {
             tempListB.add(mylist.get(end));
             return Merge(tempListA,tempListB, order);            
         }else{
-            tempListA = sortByAlpha(order, start, (end+start)/2);
-            tempListB = sortByAlpha(order, (end+start)/2+1, end);
+            tempListA = AlphaMergeSort(order, start, (end+start)/2);
+            tempListB = AlphaMergeSort(order, (end+start)/2+1, end);
             return Merge(tempListA,tempListB, order);            
         }
 

@@ -3,17 +3,26 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
-        System.out.print("Start? (yes/no): \t\t");  
+        String buffer;
+        
         StudentList testList = new StudentList();
-        while(s.nextLine().equals("yes") == true){
+        while(true){
             System.out.println();                    
-            System.out.print("Enter a name you want to search: \t");
-            testList.process_Search(s.nextLine());
-            System.out.print("continue? (yes/no): \t\t");
+            System.out.print("Enter a name you want to search (enter \"exit\" to quit): \t");
+            buffer=s.nextLine();
+            if(buffer.equals("exit")){
+                break;
+            }else{
+                testList.process_Search(buffer);
+            }
         }
+        System.out.println("List before Sorting:");
         testList.outputStudentList(testList.getList());        
-        testList.sortByAlpha(true, 0, testList.getList().size()-1);
+        
         System.out.println();
-        testList.outputStudentList(testList.sortByAlpha(true, 0, testList.getList().size()-1));      
+        System.out.print("Enter order of sort (true:A-Z | false:Z-A):");
+        boolean ord = s.nextBoolean();
+        System.out.println("List after Sorting:");
+        testList.outputStudentList(testList.AlphaMergeSort(ord, 0, testList.getList().size()-1));      
     }
 }

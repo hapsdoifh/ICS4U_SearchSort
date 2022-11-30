@@ -13,14 +13,17 @@ public class Temperature {
             day = d;
         }
     }
+
     private ArrayList<temps> tempList = new ArrayList<temps>();
     public Temperature(double[] tps){
         for(int i = 0; i<tps.length; i++){
             tempList.add(new temps(tps[i],i));
         }
     }
+
     public Temperature(){
     }
+
     public boolean inputTemp(){
         Scanner sc = new Scanner(System.in);
         String t,d;
@@ -63,14 +66,14 @@ public class Temperature {
         return SortedList;
     }
     
-    public int BinarySearch(ArrayList<temps> SortedList, double target){
+    public int BinarySearch(ArrayList<temps> SortedList, double target, boolean order){
         int SearchInd;
         int start=0, end=SortedList.size()-1;
         while(start != end){
             SearchInd=start+end/2;
             if(SortedList.get(SearchInd).temp == target){
                 return SearchInd;
-            }else if(SortedList.get(SearchInd).temp > target){
+            }else if(SortedList.get(SearchInd).temp > target == order){
                 end = SearchInd;
             }else{
                 start = SearchInd;
